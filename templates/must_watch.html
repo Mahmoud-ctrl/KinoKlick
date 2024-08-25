@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Must Watch | KinoKlick</title>
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you." />
+    <meta name="keywords" content="must watch, movies, TV shows, streaming, KinoKlick, trending, popular" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="KinoKlick" />
+    <meta name="theme-color" content="#2C2C2C" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Must Watch | KinoKlick">
+    <meta property="og:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
+    <meta property="og:url" content="https://www.kinoklick.com/must-watch">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Must Watch | KinoKlick">
+    <meta name="twitter:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
+
+    <!-- Styles and Scripts -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
+            </a>
+        </div>
+        <nav id="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+            </ul>
+        </nav>
+        <div class="header-right" id="header-right-desktop">
+            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
+                <div class="search-container">
+                    <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
+                    <button type="submit" class="search__button">
+                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                    </button>
+                    <div class="search__suggestions" id="search-suggestions" style="display: none;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="mobile-nav">
+            <div class="search-toggle" id="search-toggle">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                &#9776;
+            </div>
+
+            <div class="nav-wrapper" id="nav-wrapper">
+                <div class="menu-close" id="menu-close">
+                    &times;
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
+            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
+            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
+                <div class="mobile-search-container">
+                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
+                    <button type="submit" class="mobile-search-button">
+                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                    </button>
+                </div>
+                <ul id="mobile-search-suggestions" style="display: none;"></ul>
+            </form>
+        </div>
+    </header>
+
+    <h2>Must-Watch Movies</h2>
+    <div id="movie-grid" class="movie-grid">
+        {% for movie in movie_recommendations %}
+        <div class="movie-item">
+            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
+                <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
+                <div class="watch-now-button">Watch Now<i class="bi bi-play"></i> </div>
+            </a>
+            <div class="rating-container">
+                <div class="rating">
+                    <span class="rating-num"><i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>{{ "%.1f"|format(movie[4]) }}/10 </span>
+                </div>
+            </div>
+            <h3>{{ movie[2] }}</h3>
+            <p>{{ movie[3] | formatDate }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>Must-Watch TV Shows</h2>
+    <div id="movie-grid" class="movie-grid">
+        {% for show in series_recommendations %}
+        <div class="movie-item">
+            <a href="{{ url_for('tv_show', series_id=show[0], title=show[2].replace(' ', '-').lower()) }}">
+                <img src="{{ show[1] }}" alt="{{ show[2] }}">
+                <div class="watch-now-button">Watch Now</div>
+            </a>
+            <h3>{{ show[2] }}</h3>
+            <div class="rating-container">
+                <p class="rating">
+                <span class="rating-num"><i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>{{ "%.1f"|format(show[4]) }}/10</span>
+                </p>
+            </div>
+            <p>{{ show[3] | formatDate }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <footer>
+        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

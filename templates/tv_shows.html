@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Shows | KinoKlick</title>
+    <meta name="description" content="Explore the best TV shows available for streaming on KinoKlick. Watch full seasons, catch up on missed episodes, and discover new series." />
+    <meta name="keywords" content="TV shows, streaming, series, watch online, full seasons, KinoKlick" />
+    <meta name="referrer" content="origin" />
+    <meta name="author" content="KinoKlick" />
+    <meta name="theme-color" content="#2C2C2C" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="TV Shows | KinoKlick">
+    <meta property="og:description" content="Explore the best TV shows available for streaming on KinoKlick. Watch full seasons, catch up on missed episodes, and discover new series.">
+    <meta property="og:url" content="https://www.kinoklick.com/tv-shows">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TV Shows | KinoKlick">
+    <meta name="twitter:description" content="Explore the best TV shows available for streaming on KinoKlick. Watch full seasons, catch up on missed episodes, and discover new series.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
+
+    <!-- Styles and Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
+            </a>
+        </div>
+        <nav id="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+            </ul>
+        </nav>
+        <div class="header-right" id="header-right-desktop">
+            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
+                <div class="search-container">
+                    <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
+                    <button type="submit" class="search__button">
+                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                    </button>
+                    <div class="search__suggestions" id="search-suggestions" style="display: none;">
+                    </div>
+                </div>
+            </form>
+        </div> 
+
+        <div class="mobile-nav">
+            <div class="search-toggle" id="search-toggle">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                &#9776;
+            </div>
+
+            <div class="nav-wrapper" id="nav-wrapper">
+                <div class="menu-close" id="menu-close">
+                    &times;
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
+            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
+            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
+                <div class="mobile-search-container">
+                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
+                    <button type="submit" class="mobile-search-button">
+                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                    </button>
+                </div>
+                <ul id="mobile-search-suggestions" style="display: none;"></ul>
+            </form>
+        </div>
+    </header>
+    <main>
+        <section class="filters">
+            <div class="filter-group">
+                <label for="genre-select">Genre:</label>
+                <select id="genre-select">
+                    <option value="">Select Genre</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Action">Action</option>
+                    <option value="Animation">Animation</option>
+                    <option value="Comedy">Comedy</option>
+                    <option value="Crime">Crime</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Documentary">Documentary</option>
+                    <option value="Sci-Fi">Science Fiction</option>
+                    <option value="Family">Family</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Horror">Horror</option>
+                    <option value="Mystery">Mystery</option>
+
+                    <option value="Western">Western</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="year-select">Year:</label>
+                <select id="year-select">
+                    <option value="">Select Year</option>
+                    {% for year in range(2024, 1900, -1) %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="rating-select">Rating:</label>
+                <select id="rating-select">
+                    <option value="">Select Rating</option>
+                    <option value="9">9+</option>
+                    <option value="8">8+</option>
+                    <option value="7">7+</option>
+                    <option value="6">6+</option>
+                    <option value="5">5+</option>
+                    <option value="4">4+</option>
+                    <option value="3">3+</option>
+                    <option value="2">2+</option>
+                    <option value="1">1+</option>
+                </select>
+            </div>
+            <button id="filter-button" onclick="filterTvShows()">Filter</button>
+            <h2>TV Shows</h2>
+            <div id="movie-grid" class="movie-grid">
+                {% for show in tv_shows %}
+                <div class="movie-item">
+                    <a href="{{ url_for('tv_show', series_id=show[0], title=show[1].replace(' ', '-').lower()) }}">
+                        <img src="{{ show[5] }}" alt="{{ show[1] }}">
+                        <div class="watch-now-button">Watch Now<i class="bi bi-play"></i> </div>
+                    </a>
+                    <h3>{{ show[1] }}</h3>
+                    <div class="rating-container">
+                    <p class="rating">
+                    <span class="rating-num"><i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>{{ "%.1f"|format(show[4]) }}/10</span>
+                    </p>
+                </div>  
+                <p>{{ show[3] | formatDate}}</p>
+            </div>
+                {% endfor %}
+          
+            </div>
+            <section class="pagination">
+                <ul>
+                    {% if page > 1 %}
+                    <li><a href="{{ url_for('tv_shows', page=page-1) }}" class="page-link">Previous</a></li>
+                    {% endif %}
+                    {% for p in range(start_page, end_page + 1) %}
+                    <li><a href="{{ url_for('tv_shows', page=p) }}"
+                            class="page-link {% if page == p %}active{% endif %}">{{ p }}</a></li>
+                    {% endfor %}
+                    {% if page < total_pages %} <li><a href="{{ url_for('tv_shows', page=page+1) }}"
+                            class="page-link">Next</a></li>
+                        {% endif %}
+                </ul>
+            </section>
+
+            <script>
+                function getMaxPagesToShow() {
+                    if (window.innerWidth <= 480) {
+                        return 3; // Show 3 pages on very small screens
+                    } else if (window.innerWidth <= 768) {
+                        return 5; // Show 5 pages on small screens
+                    } else {
+                        return 7; // Show 7 pages on larger screens
+                    }
+                }
+
+                // Update the URL with the max_pages_to_show parameter
+                function updatePaginationLinks() {
+                    const maxPagesToShow = getMaxPagesToShow();
+                    const links = document.querySelectorAll('.page-link');
+                    links.forEach(link => {
+                        const url = new URL(link.href);
+                        url.searchParams.set('max', maxPagesToShow);
+                        link.href = url.toString();
+                    });
+                }
+
+                // Update pagination links on page load and resize
+                window.addEventListener('load', updatePaginationLinks);
+                window.addEventListener('resize', updatePaginationLinks);
+            </script>
+    </main>
+    <script>
+        $(document).ready(function () {
+            $('#filter-button').click(function () {
+                filterTvShows();
+            });
+        });
+
+        function filterTvShows() {
+            var genre = $('#genre-select').val();
+            var year = $('#year-select').val();
+            var rating = $('#rating-select').val();
+
+            $.ajax({
+                url: '/filter-tv-shows',
+                method: 'GET',
+                data: { genre: genre, year: year, rating: rating },
+                success: function (response) {
+                    var shows = response.shows;
+                    var tvShowGrid = $('#movie-grid');
+                    tvShowGrid.empty();
+                    if (shows.length > 0) {
+                        shows.forEach(function (show) {
+                        var showItem = `
+                        <div class="movie-item">
+                                <a href="/tv-show/${show.id}-${show.title.replace(/ /g, '-').toLowerCase()}">
+                                <img src="${show.poster}" alt="${show.title}">
+                                <div class="watch-now-button">Watch Now<i class="bi bi-play"></i> </div>
+                            </a>
+                            <div class="rating-container">
+                                <p class="rating">
+                                    <span class="rating-num">
+                                        <i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>${show.rating.toFixed(1)}/10
+                                    </span>
+                                </p>
+                            </div>
+                            <h3>${show.title}</h3>
+                            <p>${show.releaseDate}</p>
+                        </div>`;
+                        tvShowGrid.append(showItem);
+                    });
+                    } else {
+                        tvShowGrid.html('<p>No TV shows found matching the criteria.</p>');
+                    }
+                }
+            });
+        }
+    </script>
+    <footer>
+        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

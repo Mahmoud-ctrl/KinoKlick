@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie[1] }} | KinoKlick</title>
+    <meta name="referrer" content="origin" />
+    <meta name="description" content="Watch {{ movie[1] }} and explore more titles on KinoKlick, your go-to platform for streaming movies and TV shows." />
+    <meta name="keywords" content="movies, {{ movie[1] }}, streaming, TV shows, online cinema, watch movies, free movies, KinoKlick" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="KinoKlick" />
+    <meta name="theme-color" content="#2C2C2C" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ movie[1] }} | KinoKlick">
+    <meta property="og:description" content="Watch {{ movie[1] }} and explore more titles on KinoKlick, your go-to platform for streaming movies and TV shows.">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ movie[1] }} | KinoKlick">
+    <meta name="twitter:description" content="Watch {{ movie[1] }} and explore more titles on KinoKlick, your go-to platform for streaming movies and TV shows.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
+
+    <!-- Styles and Scripts -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='search.js') }}"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
+            </a>
+        </div>
+        <nav id="desktop-nav">
+            <ul>
+                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+            </ul>
+        </nav>
+        <div class="header-right" id="header-right-desktop">
+            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
+               <div class="search-container">
+                  <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
+                  <button type="submit" class="search__button">
+                     <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                  </button>
+                  <div class="search__suggestions" id="search-suggestions" style="display: none;">
+                  </div>
+               </div>
+            </form>
+         </div>  
+
+        <div class="mobile-nav">
+            <div class="search-toggle" id="search-toggle">
+                <i class="fa fa-search"></i>
+            </div>
+            <div class="menu-toggle" id="menu-toggle">
+                &#9776;
+            </div>
+
+            <div class="nav-wrapper" id="nav-wrapper">
+                <div class="menu-close" id="menu-close">
+                    &times;
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
+                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
+                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
+                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
+            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
+            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
+                <div class="mobile-search-container">
+                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
+                    <button type="submit" class="mobile-search-button">
+                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
+                    </button>
+                </div>
+                <ul id="mobile-search-suggestions" style="display: none;"></ul>
+            </form>
+        </div>
+    </header>
+    <main>
+        <div class="content">
+            <section class="movie-details">
+                <section class="movie-player">
+                    <h2>Watch {{ movie[1] }}</h2>
+                    <div class="player">
+                        <iframe id="movie-frame" src="{{ embed_urls['Server 1'] }}" frameborder="0" width="100%" height="500px" allowfullscreen></iframe>
+                    </div>
+                </section>
+
+                 <!-- Server selection dropdown -->
+                 <div class="server-buttons">
+                    {% for server, url in embed_urls.items() %}
+                        <button onclick="updateEmbedUrl('{{ url }}')">{{ server }}</button>
+                    {% endfor %}
+                </div>
+                <div class="details">
+                    <div class="title-rating">
+                        <h1>{{ movie[1] }}</h1>
+                        <p class="rating-circle">{{ movie[4] }}</p>
+                    </div>
+                    <div class="info-row">
+                        <div class="trailer-section">
+                            {% if movie[11] %}
+                            <a href="{{ movie[11] }}" target="_blank" class="trailer-button"><i
+                                    class="bi bi-play"></i>Play Trailer</a>
+                            {% else %}
+                            <p>Trailer not available</p>
+                            {% endif %}
+                        </div>
+                        <p class="info-item"><i class="bi bi-calendar-check" style="margin: 5px;"></i>{{ movie[3] |
+                            dateformat }}</p>
+                        <p class="info-item"><i class="bi bi-film" style="margin: 5px;"></i>{{ movie[2] }}</p>
+                        <p class="info-item"><i class="bi bi-clock" style="margin: 5px;"></i> {{ movie[5] }} </p>
+
+                    </div>
+                    <p>{{ movie[6] }}</p>
+                    <p><strong>Top Billed Cast:</strong></p>
+                    <div class="cast-images">
+                        {% if movie[9] and movie[8] and movie[10] %}
+                        {% for cast_image, real_name, character_name in zip(movie[9].split(','), movie[8].split(','),
+                        movie[10].split(',')) %}
+                        <div class="cast-card">
+                            <img src="{{ cast_image }}" alt="Cast Image" class="cast-image">
+                            <p>{{ real_name }} as </p>
+                            <em> {{ character_name }}</em>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p>No cast information available.</p>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+            </section>
+            <aside class="recommendations">
+                <h2>YOU MAY ALSO LIKE:</h2>
+                <div class="recommendation-list">
+                    {% for rec in recommendations[:6] %}
+                    <div class="recommendation-item">
+                        <a href="{{ url_for('movie', movie_id=rec[0], title=rec[2].replace(' ', '-').lower()) }}">
+                            <img src="{{ rec[1] }}" alt="{{ rec[2] }}">
+                            <p>{{ rec[2] }}</p>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </aside>
+        </div>
+    </main>
+    <script>
+        // Find all rating items
+        const ratings = document.querySelectorAll(".rating-circle");
+
+        // Function to format the rating score to a specified number of decimal places
+        function formatRating(score, decimalPlaces) {
+            return score.toFixed(decimalPlaces);
+        }
+
+        // Iterate over all rating items
+        ratings.forEach((rating) => {
+            // Get content and parse score as a float
+            const ratingContent = rating.textContent.trim();
+            const ratingScore = parseFloat(ratingContent);
+
+            // Define if the score is good, meh, or bad according to its value
+            const scoreClass = ratingScore < 4 ? "bad" : ratingScore < 6 ? "meh" : "good";
+
+            // Add score class to the rating
+            rating.classList.add(scoreClass);
+
+            // After adding the class, get its color
+            const ratingColor = window.getComputedStyle(rating).backgroundColor;
+
+            // Define the background gradient according to the score and color
+            const gradient = `conic-gradient(${ratingColor} ${(ratingScore / 10) * 100}%, transparent 0 100%)`;
+
+            // Set the gradient as the rating background
+            rating.style.background = gradient;
+
+            // Format the rating score to the desired number of decimal places (e.g., 1 decimal place)
+            const formattedRatingScore = formatRating(ratingScore, 1);
+
+            // Wrap the content in a span tag to show it above the pseudo element that masks the bar
+            rating.innerHTML = `<span>${formattedRatingScore}</span>`;
+        });
+
+        function updateEmbedUrl(url) {
+            var iframe = document.getElementById('movie-frame');
+            iframe.src = url;
+        }
+    </script>
+    <footer>
+        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
