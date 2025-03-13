@@ -1,151 +1,105 @@
 $(document).ready(function () {
-    $('#search-input').on('input', function () {
-        var query = $(this).val();
-        if (query.length > 0) {
+    function fetchSuggestions(query, targetElement) {
+        if (query.length > 1) {
             $.ajax({
                 url: '/search-suggestions',
                 method: 'GET',
                 data: { query: query },
                 success: function (response) {
-                    var suggestions = response.suggestions.slice(0, 4); // Limit to 4 suggestions
-                    var movieSuggestions = suggestions.filter(item => item.type === 'movie');
-                    var tvShowSuggestions = suggestions.filter(item => item.type === 'tv_show');
-                    var suggestionsList = '';
+                    let suggestions = response.suggestions.slice(0, 5); // Limit to 5
+                    let movieSuggestions = suggestions.filter(item => item.type === 'movie');
+                    let tvShowSuggestions = suggestions.filter(item => item.type === 'tv_show');
+                    let suggestionsList = '';
 
                     if (movieSuggestions.length > 0) {
-                        suggestionsList += '<h3>Movies</h3>';
-                        suggestionsList += movieSuggestions.map(function (item) {
-                            return `
-                                <li>
-                                    <a href="/movie/${item.id}-${item.title.replace('-').toLowerCase()}">
-                                        <img src="${item.poster}" alt="${item.title}" class="suggestion-poster">
-                                        <div class="suggestion-details">
-                                            <span class="suggestion-title">${item.title}</span>
-                                            <span class="suggestion-rating">${item.rating}/10</span>
+                        suggestionsList += `
+                            <h3 class="text-lg font-semibold text-gray-200 border-b border-gray-700 px-3 py-2">Movies</h3>
+                            <ul class="space-y-2 p-3">
+                        `;
+                        movieSuggestions.forEach(item => {
+                            suggestionsList += `
+                                <li class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800 transition">
+                                    <a href="/movie/${item.id}-${item.title.replace(/ /g, '-').toLowerCase()}" class="flex items-center gap-3 w-full">
+                                        <img src="${item.poster}" alt="${item.title}" class="w-12 h-16 rounded-lg object-cover shadow-md">
+                                        <div class="flex flex-col">
+                                            <span class="text-white font-medium">${item.title}</span>
+                                            <span class="text-sm text-gray-400">${item.rating}/10</span>
                                         </div>
                                     </a>
                                 </li>
                             `;
-                        }).join('');
+                        });
+                        suggestionsList += '</ul>';
                     }
 
                     if (tvShowSuggestions.length > 0) {
-                        suggestionsList += '<h3>TV Shows</h3>';
-                        suggestionsList += tvShowSuggestions.map(function (item) {
-                            return `
-                                <li>
-                                    <a href="/tv-show/${item.id}-${item.title.replace(/ /g, '-').toLowerCase()}"> 
-                                        <img src="${item.poster}" alt="${item.title}" class="suggestion-poster">
-                                        <div class="suggestion-details">
-                                            <span class="suggestion-title">${item.title}</span>
-                                            <span class="suggestion-rating">${item.rating}/10</span>
+                        suggestionsList += `
+                            <h3 class="text-lg font-semibold text-gray-200 border-b border-gray-700 px-3 py-2 mt-3">TV Shows</h3>
+                            <ul class="space-y-2 p-3">
+                        `;
+                        tvShowSuggestions.forEach(item => {
+                            suggestionsList += `
+                                <li class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800 transition">
+                                    <a href="/tv-show/${item.id}-${item.title.replace(/ /g, '-').toLowerCase()}" class="flex items-center gap-3 w-full">
+                                        <img src="${item.poster}" alt="${item.title}" class="w-12 h-16 rounded-lg object-cover shadow-md">
+                                        <div class="flex flex-col">
+                                            <span class="text-white font-medium">${item.title}</span>
+                                            <span class="text-sm text-gray-400">${item.rating}/10</span>
                                         </div>
                                     </a>
                                 </li>
                             `;
-                        }).join('');
+                        });
+                        suggestionsList += '</ul>';
                     }
 
                     if (suggestionsList === '') {
-                        suggestionsList = '<li class="no-results">No results found</li>';
+                        suggestionsList = '<li class="text-center text-gray-400 py-3">No results found</li>';
                     }
 
-                    $('#search-suggestions').html(suggestionsList);
-                    $('#search-suggestions').show();
+                    $(targetElement).html(suggestionsList).show();
                 }
             });
         } else {
-            $('#search-suggestions').hide();
+            $(targetElement).hide();
         }
+    }
+
+    // Desktop Search
+    $('#search-input').on('input', function () {
+        fetchSuggestions($(this).val(), '#search-suggestions');
     });
 
+    // Mobile Search
+    $('#mobile-search-input').on('input', function () {
+        fetchSuggestions($(this).val(), '#mobile-search-suggestions');
+    });
+
+    // Toggle mobile search
     $('#search-toggle').on('click', function () {
-        $('#mobile-search-wrapper').fadeIn();
+        $('#mobile-search-wrapper').fadeIn().removeClass('hidden');
+        $('#mobile-search-input').focus();
     });
 
     $('#mobile-search-close').on('click', function () {
-        $('#mobile-search-wrapper').fadeOut();
+        $('#mobile-search-wrapper').fadeOut().addClass('hidden');
     });
 
-    $('#mobile-search-input').on('input', function () {
-        var query = $(this).val();
-        if (query.length > 0) {
-            $.ajax({
-                url: '/search-suggestions',
-                method: 'GET',
-                data: { query: query },
-                success: function (response) {
-                    var suggestions = response.suggestions.slice(0, 4); // Limit to 4 suggestions
-                    var movieSuggestions = suggestions.filter(item => item.type === 'movie');
-                    var tvShowSuggestions = suggestions.filter(item => item.type === 'tv_show');
-                    var suggestionsList = '';
-
-                    if (movieSuggestions.length > 0) {
-                        suggestionsList += '<h3>Movies</h3>';
-                        suggestionsList += movieSuggestions.map(function (item) {
-                            return `
-                                <li>
-                                    <a href="/movie/${item.id}-${item.title.replace('-').toLowerCase()}">
-                                        <img src="${item.poster}" alt="${item.title}" class="suggestion-poster">
-                                        <div class="suggestion-details">
-                                            <span class="suggestion-title">${item.title}</span>
-                                            <span class="suggestion-rating">${item.rating}/10</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            `;
-                        }).join('');
-                    }
-
-                    if (tvShowSuggestions.length > 0) {
-                        suggestionsList += '<h3>TV Shows</h3>';
-                        suggestionsList += tvShowSuggestions.map(function (item) {
-                            return `
-                                <li>
-                                    <a href="/tv-show/${item.id}-${item.title.replace(/ /g, '-').toLowerCase()}"> 
-                                        <img src="${item.poster}" alt="${item.title}" class="suggestion-poster">
-                                        <div class="suggestion-details">
-                                            <span class="suggestion-title">${item.title}</span>
-                                            <span class="suggestion-rating">${item.rating}/10</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            `;
-                        }).join('');
-                    }
-
-                    if (suggestionsList === '') {
-                        suggestionsList = '<li class="no-results">No results found</li>';
-                    }
-
-                    $('#mobile-search-suggestions').html(suggestionsList);
-                    $('#mobile-search-suggestions').show();
-                }
-            });
-        } else {
-            $('#mobile-search-suggestions').hide();
+    // Hide suggestions when clicking outside
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('.search-container').length) {
+            $('#search-suggestions, #mobile-search-suggestions').hide();
         }
     });
 });
 
+
 document.addEventListener('DOMContentLoaded', function () {
-    var menuToggle = document.getElementById('menu-toggle');
-    var menuClose = document.getElementById('menu-close');
-    var navWrapper = document.getElementById('nav-wrapper');
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.remove('translate-x-full');
+    });
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function () {
-            if (navWrapper.classList.contains('show')) {
-                navWrapper.classList.remove('show');
-            } else {
-                navWrapper.classList.add('show');
-            }
-        });
-    }
-
-    if (menuClose) {
-        menuClose.addEventListener('click', function () {
-            navWrapper.classList.remove('show');
-        });
-    }
+    document.getElementById('menu-close').addEventListener('click', function() {
+        document.getElementById('mobile-menu').classList.add('translate-x-full');
+    });
 });
