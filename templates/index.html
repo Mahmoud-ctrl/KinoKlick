@@ -1,528 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KinoKlick | Home</title>
-    <meta name="referrer" content="origin" />
-    <meta name="description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick." />
-    <meta name="keywords" content="movies, streaming, TV shows, online cinema, new releases, watch movies, free movies, watch movies for free, Kinoklick" />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="KinoKlick" />
-    <meta name="theme-color" content="#2C2C2C" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="KinoKlick | Home">
-    <meta property="og:description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick.">
-    <meta property="og:url" content="https://www.kinoklick.com/">
-    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="KinoKlick | Home">
-    <meta name="twitter:description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick.">
-    <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
-
-    <!-- Styles and Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename='search.js') }}"></script>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="canonical" href="https://www.kinoklick.com/" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <header>
-        <div class="logo">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
-            </a>
-        </div>
-        <nav id="desktop-nav">
-            <ul>
-                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-            </ul>
-        </nav>
-        <div class="header-right" id="header-right-desktop">
-            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
-                <div class="search-container">
-                    <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
-                    <button type="submit" class="search__button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                    <div class="search__suggestions" id="search-suggestions" style="display: none;">
-                    </div>
-                </div>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>KinoKlick | Home</title>
+      <meta name="referrer" content="origin" />
+      <meta name="description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick." />
+      <meta name="keywords" content="movies, streaming, TV shows, online cinema, new releases, watch movies, free movies, watch movies for free, Kinoklick" />
+      <meta name="robots" content="index, follow" />
+      <meta name="author" content="KinoKlick" />
+      <meta name="theme-color" content="#2C2C2C" />
+      <!-- Open Graph / Facebook -->
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="KinoKlick | Home">
+      <meta property="og:description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick.">
+      <meta property="og:url" content="https://www.kinoklick.com/">
+      <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
+      <!-- Twitter -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="KinoKlick | Home">
+      <meta name="twitter:description" content="Kinoklick offers a wide selection of the latest movies and TV shows available for streaming. Discover new releases, trending titles, and more on Kinoklick.">
+      <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
+      <!-- Styles and Scripts -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="{{ url_for('static', filename='search.js') }}"></script>
+      <link rel="preconnect" href="https://cdn.jsdelivr.net">
+      <link rel="canonical" href="https://www.kinoklick.com/" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+         tailwind.config = {
+             theme: {
+                 extend: {
+                     colors: {
+                         'kino-yellow': '#FFCA28',
+                         'kino-dark': '#121212',
+                         'kino-darker': '#0A0A0A',
+                         'kino-orange': '#FF6D00',
+                     },
+                     fontFamily: {
+                         'outfit': ['Outfit', 'sans-serif'],
+                     },
+                 }
+             }
+         }
+      </script>
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+         /* Custom scrollbar */
+         .scrollbar-hide::-webkit-scrollbar {
+         display: none;
+         }
+         .scrollbar-hide {
+         -ms-overflow-style: none;
+         scrollbar-width: none;
+         }
+         /* Animations */
+         @keyframes fadeIn {
+         from { opacity: 0; }
+         to { opacity: 1; }
+         }
+         .animate-fade-in {
+         animation: fadeIn 0.6s ease-in;
+         }
+         /* Glass effect */
+         .glass-effect {
+         backdrop-filter: blur(10px);
+         }
+      </style>
+   </head>
+   <body class="bg-kino-dark text-white font-outfit">
+      <!-- Header with Glass Effect -->
+      <header class="fixed w-full z-50 transition-all duration-300" id="main-header">
+         <div class="glass-effect bg-black bg-opacity-50 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+               <!-- Logo -->
+               <a href="/" class="transform hover:scale-105 transition-transform duration-300">
+               <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 filter drop-shadow-lg">
+               </a>
+               <!-- Desktop Navigation -->
+               <nav class="hidden md:flex space-x-8">
+                  <a href="/" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Home</a>
+                  <a href="/movies" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Movies</a>
+                  <a href="/tv-shows" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">TV Shows</a>
+                  <a href="/must_watch" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Must_Watch</a>
+               </nav>
+               <!-- Search & User Menu -->
+               <div class="hidden md:flex items-center space-x-6">
+                  <div class="relative">
+                     <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
+                        <input type="text" name="query" id="search-input" 
+                           placeholder="Search for movies, TV shows..." 
+                           class="bg-black bg-opacity-40 text-white pl-10 pr-4 py-2 rounded-full focus:outline-none 
+                           focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-40 focus:w-64"
+                           autocomplete="off" required>
+                        <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                        <div class="absolute top-full left-0 w-full bg-black bg-opacity-90 text-white 
+                           rounded-md shadow-lg search__suggestions hidden" id="search-suggestions">
+                        </div>
+                     </form>
+                  </div>
+                  <a href="/account" class="text-white hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-person-circle text-xl"></i>
+                  </a>
+               </div>
+               <!-- Mobile Menu Button -->
+               <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+               <i class="bi bi-list text-2xl"></i>
+               </button>
+            </div>
+         </div>
+      </header>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center space-y-8 transform transition-transform duration-300 translate-x-full">
+         <button id="menu-close" class="absolute top-6 right-6 text-3xl text-white focus:outline-none">
+         <i class="bi bi-x"></i>
+         </button>
+         <a href="/" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Home</a>
+         <a href="/movies" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Movies</a>
+         <a href="/tv-shows" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">TV Shows</a>
+         <a href="/must_watch" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Must_Watch</a>
+         <!-- Search Section -->
+         <div class="mt-6 relative w-64">
+            <form action="{{ url_for('search') }}" method="GET" class="relative w-full">
+               <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" 
+                  id="mobile-search-input"
+                  class="bg-black bg-opacity-40 border border-gray-800 text-white pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-full">
+               <i class="bi bi-search absolute left-3 top-3.5 text-gray-400"></i>
+               <button type="submit" class="absolute right-3 top-3 text-white text-lg">
+               <i class="bi bi-search"></i>
+               </button>
             </form>
-        </div>
-        
-        <div class="mobile-nav">
-            <div class="search-toggle" id="search-toggle">
-                <i class="fa fa-search"></i>
+            <!-- Suggestions -->
+            <ul id="mobile-search-suggestions" class="absolute w-full mt-2 bg-gray-900 text-white shadow-lg rounded-lg hidden"></ul>
+         </div>
+      </div>
+      <!-- Main Content -->
+      <main class="pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto">
+      <!-- Hero Slider -->
+      <section class="relative w-full mb-16 animate-fade-in">
+         <div id="movie-slider" class="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+            {% for movie in latest_movies %}
+            <div class="relative min-w-full md:min-w-[60%] lg:min-w-[40%] snap-center bg-cover bg-center h-[500px] flex flex-col justify-end p-8 rounded-2xl shadow-xl transition-all duration-500 transform hover:scale-[1.02] group"
+               style="background-image: url('{{ movie[2] }}');">
+               <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent rounded-2xl"></div>
+               <!-- Movie Details -->
+               <div class="relative z-10 transform transition-transform duration-500 translate-y-0 group-hover:translate-y-[-10px]">
+                  <div class="flex items-center mb-2">
+                     <span class="bg-kino-yellow text-black px-2 py-0.5 rounded text-xs font-semibold mr-2">NEW</span>
+                     <span class="text-sm text-gray-300">{{ movie[3] }}</span>
+                  </div>
+                  <h1 class="text-4xl font-bold text-white mb-3">{{ movie[1] }}</h1>
+                  <div class="flex items-center space-x-4 mb-4">
+                     <div class="flex items-center">
+                        <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                        <span>{{ "%.1f"|format(movie[4]) }}</span>
+                     </div>
+                     <div class="flex items-center">
+                        <i class="bi bi-clock mr-1"></i>
+                        <span>{{ movie[5] }}</span>
+                     </div>
+                  </div>
+                  <div class="flex space-x-3">
+                     <a href="{{ url_for('movie', movie_id=movie[0], title=movie[1].replace(' ', '-').lower()) }}" 
+                        class="bg-kino-yellow text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-white hover:shadow-lg hover:shadow-kino-yellow/20 flex items-center">
+                     <i class="bi bi-play-fill mr-2"></i> Watch Now
+                     </a>
+                     <button class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-3 rounded-lg transition-all duration-300 flex items-center">
+                     <i class="bi bi-plus-lg mr-2"></i> Watchlist
+                     </button>
+                  </div>
+               </div>
             </div>
-            <div class="menu-toggle" id="menu-toggle">
-                &#9776;
+            {% endfor %}
+         </div>
+         <!-- Slider Navigation -->
+         <button onclick="scrollLeftS('movie-slider')" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-lg hover:bg-kino-yellow hover:text-black transition-all duration-300">
+         <i class="bi bi-chevron-left"></i>
+         </button>
+         <button onclick="scrollRight('movie-slider')" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-lg hover:bg-kino-yellow hover:text-black transition-all duration-300">
+         <i class="bi bi-chevron-right"></i>
+         </button>
+         <!-- Slider Pagination -->
+         <div class="flex justify-center mt-6 space-x-2">
+            <button class="w-3 h-3 rounded-full bg-kino-yellow"></button>
+            <button class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 transition-colors duration-300"></button>
+            <button class="w-3 h-3 rounded-full bg-gray-600 hover:bg-gray-400 transition-colors duration-300"></button>
+         </div>
+      </section>
+      <!-- Upcoming Movies -->
+      <section class="mb-16">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Upcoming Movies</h2>
+         </div>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide pb-4">
+            {% for new_movie in upcoming_movies[:6] %}
+            <div class="relative flex-shrink-0 w-48 group">
+               <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                  <div class="relative">
+                     <img src="{{ new_movie[7] }}" alt="{{ new_movie[1] }} poster" class="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110">
+                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                     <div class="absolute bottom-0 right-0 m-2">
+                        <span class="bg-kino-yellow text-black px-2 py-0.5 rounded text-xs font-semibold">SOON</span>
+                     </div>
+                  </div>
+                  <div class="p-3">
+                     <h4 class="font-semibold text-white">{{ new_movie[1] }}</h4>
+                     <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                        <span><i class="bi bi-calendar mr-1"></i> {{ new_movie[3] }}</span>
+                        <span><i class="bi bi-film mr-1"></i> {{ new_movie[2] }}</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button class="bg-kino-yellow text-black px-4 py-2 rounded-lg font-semibold transform -translate-y-10 group-hover:translate-y-0 transition-all duration-500">
+                  Remind Me
+                  </button>
+               </div>
             </div>
-
-            <div class="nav-wrapper" id="nav-wrapper">
-                <div class="menu-close" id="menu-close">
-                    &times;
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-                    </ul>
-                </nav>
+            {% endfor %}
+         </div>
+      </section>
+      <section class="mb-16">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Action & Adventure</h2>
+         </div>
+         <div class="relative px-4 relative">
+            <!-- Left Arrow -->
+            <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('action-adventure-row')">
+            <i class="bi bi-chevron-left text-xl"></i>
+            </button>
+            <!-- Movie Row -->
+            <!-- Action Adventure Movies -->
+            <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="action-adventure-row">
+               {% for movie in action_adventure %}
+               <div class="relative flex-shrink-0 w-60 group snap-start">
+                  <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                     <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                        <div class="relative">
+                           <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                           <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                                 <i class="bi bi-play-fill text-black text-3xl"></i>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="p-3">
+                           <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                           <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                              <span class="flex items-center">
+                              <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                              <span>{{ movie[3] }}</span>
+                              </span>
+                              <span class="flex items-center">
+                              <i class="bi bi-clock mr-1"></i>
+                              <span>{{ movie[4] }}</span>
+                              </span>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+               {% endfor %}
             </div>
-        </div>
-
-        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
-            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
-            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
-                <div class="mobile-search-container">
-                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
-                    <button type="submit" class="mobile-search-button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                </div>
-                <ul id="mobile-search-suggestions" style="display: none;"></ul>
-            </form>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero">
-            <div class="content-wrapper">
-                <div class="movie-slider" id="movie-slider">
-                    {% for movie in latest_movies %}
-                        <div class="movie-slide" style="background-image: url('{{ movie[2] }}');">
-                            <div class="new-sticker">
-                                <span class="sticker"></span>
-                                <span class="new">NEW!</span>
-                            </div>
-                            <section class="movie-info">
-                                <h1>{{ movie[1] }}</h1>
-                                <div class="info-row" id="movie-info-row">
-                                    <p class="info-item"><i class="bi bi-star-fill" style="margin: 5px; color: #f8ce0b;"></i> {{ "%.1f"|format(movie[4]) }} </p>
-                                    <p class="info-item"><i class="bi bi-clock" style="margin: 5px;"></i>{{ movie[5] }}</p>      
-                                    <p class="info-item"><i class="bi bi-film" style="margin: 5px;"></i>{{ movie[3] }}</p>          
-                                </div>
-                                <p class="over">{{ movie[6] }}</p>
-                                <div class="hero-buttons">
-                                    <a href="{{ url_for('movie', movie_id=movie[0], title=movie[1].replace(' ', '-').lower()) }}">
-                                        <div class="watch-now">Watch Now</div>
-                                    </a>
-                                    <div class="trailer-section">
-                                        {% if movie[7] %}
-                                            <a href="{{ movie[7] }}" target="_blank" class="watch-now"><i class="bi bi-play"></i>Play Trailer</a>
-                                        {% else %}
-                                            <p>Trailer not available</p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </section>
-                            <button class="scroll-button left" onclick="scrollLeftS('movie-slider')"><i class="bi bi-caret-left"></i></button>
-                            <button class="scroll-button right" onclick="scrollRight('movie-slider')"><i class="bi bi-caret-right"></i></button>
+            <!-- Right Arrow -->
+            <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('action-adventure-row')">
+            <i class="bi bi-chevron-right text-xl"></i>
+            </button>
+         </div>
+      </section>
+      <section class="mb-16 relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Horror</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('horror-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="horror-row">
+            {% for movie in horror %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
                         </div>
-                    {% endfor %}
-                </div>
-                <div class="upcoming-movies" id="upcoming-movies">
-                    <h2>Upcoming Movies</h2>
-                    {% for new_movie in upcoming_movies[:3] %}
-                    <div class="upcoming-movie">
-                        <div class="movie-poster">
-                            <img src="{{ new_movie[7] }}" alt="{{ new_movie[1] }} poster">
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
                         </div>
-                        <div class="movie-details">
-                            <h4>{{ new_movie[1] }}</h4>
-                            <p><em>Release Date:</em> <i class="bi bi-hourglass-split" style="margin: 5px;"></i>{{ new_movie[3] }}</p>
-                            <p><em>Genre:</em><i class="bi bi-film" style="margin: 5px;"></i> {{ new_movie[2] }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+                     </div>
+                  </div>
+               </a>
             </div>
-           <div class="radio-buttons-container" id="radio-buttons-container"></div>
-            </section>
-        
-        <div class="big">
-            <section id="action-adventure">
-                <h2>Action & Adventure Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('action-adventure-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="action-adventure-row">
-                        {% for movie in action_adventure %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('horror-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <section class="mb-16 relative relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Comedy</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('comedy-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="comedy-row">
+            {% for movie in comedy %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
                         </div>
-                    {% endfor %}
-
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('action-adventure-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="Horror">
-                <h2>Horror Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('horror-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="horror-row">
-                        {% for movie in horror %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('horror-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="Comedy">
-                <h2>Comedy Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('comedy-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="comedy-row">
-                        {% for movie in comedy %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('comedy-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <section class="mb-16 relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Science Fiction Movies</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('scifi-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="scifi-row">
+            {% for movie in scifi %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('comedy-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="SciFi">
-                <h2>Science Fiction Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('scifi-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="scifi-row">
-                        {% for movie in scifi %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('scifi-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="Romance">
-                <h2>Romance Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('romance-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="romance-row">
-                        {% for movie in romance %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('scifi-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <section class="mb-16 relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Romance Movies</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('romance-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="romance-row">
+            {% for movie in romance %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('romance-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="Crime">
-                <h2>Crime Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('crime-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="crime-row">
-                        {% for movie in crime %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('crime-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-
-            <section id="Animation">
-                <h2>Animation Movies</h2>
-                <div class="movie-container">
-                    <div class="arrow left-arrow" onclick="scrollLeftS('animation-row')"><i class="bi bi-caret-left"></i></div>
-                    <div class="movie-row" id="animation-row">
-                        {% for movie in animation %}
-                        <div class="movie-item-t">
-                            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                                <picture>
-                                    <source srcset="{{ movie[1] }}?w=480 480w, {{ movie[1] }}?w=800 800w, {{ movie[1] }}?w=1200 1200w" sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px" type="image/jpeg">
-                                    <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                                </picture>
-                                <div class="watch-now-button">Watch Now</div>
-                            </a>
-                            <h3>{{ movie[2] }}</h3>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('romance-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <section class="mb-16 relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Crime Movies</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('crime-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="crime-row">
+            {% for movie in crime %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="arrow right-arrow" onclick="scrollRight('animation-row')"><i class="bi bi-caret-right"></i></div>
-                </div>
-            </section>
-            <section>
-                <div class="explore-more">
-                    <a href="{{ url_for('movies') }}">
-                        <span>Explore More</span>
-                        <i class="bi bi-box-arrow-up-right" style="padding: 5px;"></i>
-                    </a>
-                </div>
-            </section>            
-        </div>
-    </main>
-    <footer>
-        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
-    </footer>
-</body>
-<script>
-
-
-function scrollRight(containerId) {
-            const container = document.getElementById(containerId);
-            if (container) {
-                container.scrollBy({
-                    left: container.clientWidth,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
-        function scrollLeftS(containerId) {
-            const container = document.getElementById(containerId);
-            if (container) {
-                container.scrollBy({
-                    left: -container.clientWidth,
-                    behavior: 'smooth'
-                });
-            }
-        }
-
- // Radio Button Slider Control
-document.addEventListener("DOMContentLoaded", function() {
-    const slider = document.getElementById('movie-slider');
-    const slides = slider.getElementsByClassName('movie-slide');
-    const radioButtonsContainer = document.getElementById('radio-buttons-container');
-    
-    for (let i = 0; i < slides.length; i++) {
-        let radioButton = document.createElement('div');
-        radioButton.classList.add('radio-button');
-        radioButton.addEventListener('click', function() {
-            slider.scrollLeft = i * slider.clientWidth;
-            updateActiveButton(i);
-        });
-        radioButtonsContainer.appendChild(radioButton);
-    }
-    
-    const radioButtons = radioButtonsContainer.getElementsByClassName('radio-button');
-    function updateActiveButton(index) {
-        for (let i = 0; i < radioButtons.length; i++) {
-            radioButtons[i].classList.remove('active');
-        }
-        radioButtons[index].classList.add('active');
-    }
-    
-    // Initial active button
-    updateActiveButton(0);
-    
-    // Scroll event listener
-    slider.addEventListener('scroll', function() {
-        let index = Math.round(slider.scrollLeft / slider.clientWidth);
-        updateActiveButton(index);
-    });
-});
-
-// Scroll Left and Right Functions for Slider
-function scrollLeftS(id) {
-    let slider = document.getElementById(id);
-    let scrollAmount = slider.clientWidth;
-    let newScrollLeft = slider.scrollLeft - scrollAmount;
-
-    if (newScrollLeft < 0) {
-        newScrollLeft = slider.scrollWidth - slider.clientWidth;
-    }
-
-    slider.scrollTo({
-        left: newScrollLeft,
-        behavior: 'smooth'
-    });
-}
-
-function scrollRight(id) {
-    let slider = document.getElementById(id);
-    let scrollAmount = slider.clientWidth;
-    let newScrollLeft = slider.scrollLeft + scrollAmount;
-
-    if (newScrollLeft > slider.scrollWidth - slider.clientWidth) {
-        newScrollLeft = 0;
-    }
-
-    slider.scrollTo({
-        left: newScrollLeft,
-        behavior: 'smooth'
-    });
-}
-
-// Automatic Switching of Upcoming Movies
-let upcomingMovies = {{ upcoming_movies|tojson }};
-let currentIndex = 0;
-const displayLimit = 3;
-const switchInterval = 10000; // 10 seconds
-
-function switchUpcomingMovies() {
-    const upcomingMoviesDiv = document.getElementById('upcoming-movies');
-    upcomingMoviesDiv.classList.add('fade-out');
-
-    setTimeout(() => {
-        // Clear current movies
-        upcomingMoviesDiv.innerHTML = '<h2>Upcoming Movies</h2>';
-
-        // Display next set of movies
-        for (let i = 0; i < displayLimit; i++) {
-            const movieIndex = (currentIndex + i) % upcomingMovies.length;
-            const movie = upcomingMovies[movieIndex];
-            const movieHTML = `
-                <div class="upcoming-movie">
-                    <div class="movie-poster">
-                        <img src="${movie[7]}" alt="${movie[1]} poster">
-                    </div>
-                    <div class="movie-details">
-                        <h4>${movie[1]}</h4>
-                        <p><em>Release Date:</em> <i class="bi bi-hourglass-split" style="margin: 5px;"></i>${movie[3]}</p>
-                        <p><em>Genre:</em><i class="bi bi-film" style="margin: 5px;"></i> ${movie[2]}</p>
-                    </div>
-                </div>
-            `;
-            upcomingMoviesDiv.innerHTML += movieHTML;
-        }
-
-        // Update the index
-        currentIndex = (currentIndex + displayLimit) % upcomingMovies.length;
-
-        upcomingMoviesDiv.classList.remove('fade-out');
-        upcomingMoviesDiv.classList.add('fade-in');
-    }, 500);
-}
-
-// Start the movie switching
-setInterval(switchUpcomingMovies, switchInterval);
-
-// Automatic Sliding of Movie Slider
-document.addEventListener('DOMContentLoaded', function() {
-    const movieSlider = document.getElementById('movie-slider');
-    const scrollInterval = 5000; // 5 seconds
-    let autoScroll;
-
-    function startAutoScroll() {
-        autoScroll = setInterval(() => {
-            scrollRight('movie-slider');
-        }, scrollInterval);
-    }
-
-    function stopAutoScroll() {
-        clearInterval(autoScroll);
-    }
-
-    function scrollRight(sliderId) {
-        const slider = document.getElementById(sliderId);
-        const scrollAmount = slider.offsetWidth;
-
-        slider.scrollBy({
-            left: scrollAmount,
-            behavior: 'smooth'
-        });
-
-        if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth) {
-            slider.scrollTo({ left: 0, behavior: 'smooth' });
-        }
-    }
-
-    function scrollLeft(sliderId) {
-        const slider = document.getElementById(sliderId);
-        const scrollAmount = slider.offsetWidth;
-
-        slider.scrollBy({
-            left: -scrollAmount,
-            behavior: 'smooth'
-        });
-
-        if (slider.scrollLeft === 0) {
-            slider.scrollTo({ left: slider.scrollWidth, behavior: 'smooth' });
-        }
-    }
-
-    // Start the auto scroll when the page loads
-    startAutoScroll();
-
-    // Pause the auto scroll when the user hovers over the slider
-    movieSlider.addEventListener('mouseover', stopAutoScroll);
-    movieSlider.addEventListener('mouseout', startAutoScroll);
-
-    // Attach scroll functions to buttons
-    document.querySelector('.scroll-button.left').addEventListener('click', () => {
-        stopAutoScroll();
-        scrollLeft('movie-slider');
-        startAutoScroll();
-    });
-
-    document.querySelector('.scroll-button.right').addEventListener('click', () => {
-        stopAutoScroll();
-        scrollRight('movie-slider');
-        startAutoScroll();
-    });
-});
-
-
-</script>
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('crime-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <section class="mb-16 relative">
+         <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Animation Movies</h2>
+         </div>
+         <!-- Left Arrow -->
+         <button class="absolute left-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollLeftS('animation-row')">
+         <i class="bi bi-chevron-left text-xl"></i>
+         </button>
+         <div class="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x pb-4" id="animation-row">
+            {% for movie in animation %}
+            <div class="relative flex-shrink-0 w-60 group snap-start">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="overflow-hidden rounded-xl shadow-lg bg-kino-darker">
+                     <div class="relative">
+                        <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                           <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                              <i class="bi bi-play-fill text-black text-3xl"></i>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="p-3">
+                        <h4 class="font-semibold text-white truncate">{{ movie[2] }}</h4>
+                        <div class="flex justify-between items-center mt-2 text-xs text-gray-400">
+                           <span class="flex items-center">
+                           <i class="bi bi-star-fill text-kino-yellow mr-1"></i>
+                           <span>{{ movie[3] }}</span>
+                           </span>
+                           <span class="flex items-center">
+                           <i class="bi bi-clock mr-1"></i>
+                           <span>{{ movie[4] }}</span>
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+            {% endfor %}
+         </div>
+         <!-- Right Arrow -->
+         <button class="absolute right-0 z-10 p-2 bg-black bg-opacity-50 hover:bg-kino-yellow hover:text-black transition-all duration-300 rounded-full text-white top-1/2 -translate-y-1/2" onclick="scrollRight('animation-row')">
+         <i class="bi bi-chevron-right text-xl"></i>
+         </button>
+         </div>
+      </section>
+      <!-- Footer -->
+      <footer class="bg-kino-darker py-12 px-4 md:px-8">
+         <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+               <div>
+                  <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 mb-4">
+                  <p class="text-gray-400 mb-4">Your ultimate destination for movies and TV shows. Stream unlimited content anytime, anywhere.</p>
+                  <div class="flex space-x-4">
+                     <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                     <i class="bi bi-facebook"></i>
+                     </a>
+                     <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                     <i class="bi bi-twitter"></i>
+                     </a>
+                     <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                     <i class="bi bi-instagram"></i>
+                     </a>
+                     <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                     <i class="bi bi-youtube"></i>
+                     </a>
+                  </div>
+               </div>
+               <div>
+                  <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                  <ul class="space-y-2">
+                     <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Movies</a></li>
+                     <li><a href="/tv-shows" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">TV Shows</a></li>
+                     <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Genres</a></li>
+                     <li><a href="#upcoming" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Upcoming</a></li>
+                     <li><a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Help</a></li>
+                  </ul>
+               </div>
+               <div>
+                  <h4 class="text-lg font-semibold mb-4">About KinoKlick</h4>
+                  <p class="text-gray-400">KinoKlick is a streaming service that offers a wide range of movies and TV shows. We pride ourselves on providing the best quality content available at the best price.</p>
+               </div>
+               <div>
+                  <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                  <p class="text-gray-400">Email: contact@kinoklick.com-</p>
+               </div>
+            </div>
+         </div>
+         <div class="text-center text-gray-400 text-xs">
+            &copy; 2022 KinoKlick. All rights reserved.
+         </div>
+      </footer>
+      <script>
+         function scrollLeftS(rowId) {
+             const row = document.getElementById(rowId);
+             row.scrollBy({
+                 left: -300,
+                 behavior: 'smooth'
+             });
+         }
+         
+         function scrollRight(rowId) {
+             const row = document.getElementById(rowId);
+             row.scrollBy({
+                 left: 300,
+                 behavior: 'smooth'
+             });
+         }
+      </script>
+   </body>
+   </script>
 </html>

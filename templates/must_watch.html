@@ -1,148 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Must Watch | KinoKlick</title>
-    <meta name="referrer" content="origin" />
-    <meta name="description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you." />
-    <meta name="keywords" content="must watch, movies, TV shows, streaming, KinoKlick, trending, popular" />
-    <meta name="robots" content="index, follow" />
-    <meta name="author" content="KinoKlick" />
-    <meta name="theme-color" content="#2C2C2C" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Must Watch | KinoKlick">
-    <meta property="og:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
-    <meta property="og:url" content="https://www.kinoklick.com/must-watch">
-    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Must Watch | KinoKlick">
-    <meta name="twitter:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
-    <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
-
-    <!-- Styles and Scripts -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
-    <script src="{{ url_for('static', filename='search.js') }}"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
-</head>
-
-<body>
-    <header>
-        <div class="logo">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
-            </a>
-        </div>
-        <nav id="desktop-nav">
-            <ul>
-                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-            </ul>
-        </nav>
-        <div class="header-right" id="header-right-desktop">
-            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
-                <div class="search-container">
-                    <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
-                    <button type="submit" class="search__button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                    <div class="search__suggestions" id="search-suggestions" style="display: none;">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="mobile-nav">
-            <div class="search-toggle" id="search-toggle">
-                <i class="fa fa-search"></i>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Must Watch | KinoKlick</title>
+      <meta name="referrer" content="origin" />
+      <meta name="description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you." />
+      <meta name="keywords" content="must watch, movies, TV shows, streaming, KinoKlick, trending, popular" />
+      <meta name="robots" content="index, follow" />
+      <meta name="author" content="KinoKlick" />
+      <meta name="theme-color" content="#2C2C2C" />
+      <!-- Open Graph / Facebook -->
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="Must Watch | KinoKlick">
+      <meta property="og:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
+      <meta property="og:url" content="https://www.kinoklick.com/must-watch">
+      <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}">
+      
+      <!-- Twitter -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="Must Watch | KinoKlick">
+      <meta name="twitter:description" content="Discover the must-watch movies and TV shows on KinoKlick. Don't miss out on the latest trending titles curated just for you.">
+      <meta name="twitter:image" content="{{ url_for('static', filename='images/twitter-image.png') }}">
+      
+      <!-- Styles and Scripts -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+      <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+      <script src="{{ url_for('static', filename='search.js') }}"></script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+         /* Custom scrollbar */
+         .scrollbar-hide::-webkit-scrollbar {
+         display: none;
+         }
+         .scrollbar-hide {
+         -ms-overflow-style: none;
+         scrollbar-width: none;
+         }
+         /* Animations */
+         @keyframes fadeIn {
+         from { opacity: 0; }
+         to { opacity: 1; }
+         }
+         .animate-fade-in {
+         animation: fadeIn 0.6s ease-in;
+         }
+         /* Glass effect */
+         .glass-effect {
+         backdrop-filter: blur(10px);
+         }
+         /* Custom styles for rating circle animation */
+         .rating-circle {
+         position: relative;
+         width: 60px;
+         height: 60px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-weight: bold;
+         color: white;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+         }
+         .rating-circle::before {
+         content: "";
+         position: absolute;
+         inset: 5px;
+         border-radius: 50%;
+         background-color: #141414;
+         z-index: 1;
+         }
+         .rating-circle span {
+         position: relative;
+         z-index: 2;
+         font-size: 1.25rem;
+         }
+         .rating-circle.good {
+         --rating-color: rgb(25, 135, 84);
+         }
+         .rating-circle.meh {
+         --rating-color: rgb(255, 193, 7);
+         }
+         .rating-circle.bad {
+         --rating-color: rgb(220, 53, 69);
+         }
+      </style>
+   </head>
+   <body class="bg-dark text-white font-outfit" style="background-color: #121212;">
+      <!-- Header with Glass Effect -->
+      <header class="fixed w-full z-50 transition-all duration-300" id="main-header">
+         <div class="glass-effect bg-black bg-opacity-50 px-6 py-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+               <!-- Logo -->
+               <a href="/" class="transform hover:scale-105 transition-transform duration-300">
+               <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 filter drop-shadow-lg">
+               </a>
+               <!-- Desktop Navigation -->
+               <nav class="hidden md:flex space-x-8">
+                  <a href="{{ url_for('index') }}" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Home</a>
+                  <a href="{{ url_for('movies') }}" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Movies</a>
+                  <a href="{{ url_for('tv_shows') }}" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">TV Shows</a>
+                  <a href="{{ url_for('must_watch') }}" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Must-Watch</a>
+               </nav>
+               <!-- Search & User Menu -->
+               <div class="hidden md:flex items-center space-x-6">
+                  <div class="relative">
+                     <input type="text" placeholder="Search..." class="bg-black bg-opacity-40 text-white pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-40 focus:w-64">
+                     <i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+                  </div>
+                  <a href="/account" class="text-white hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-person-circle text-xl"></i>
+                  </a>
+               </div>
+               <!-- Mobile Menu Button -->
+               <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+               <i class="bi bi-list text-2xl"></i>
+               </button>
             </div>
-            <div class="menu-toggle" id="menu-toggle">
-                &#9776;
+         </div>
+      </header>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center space-y-8 transform transition-transform duration-300 translate-x-full">
+         <button id="menu-close" class="absolute top-6 right-6 text-3xl text-white focus:outline-none">
+         <i class="bi bi-x"></i>
+         </button>
+         <a href="{{ url_for('index') }}" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Home</a>
+         <a href="{{ url_for('movies') }}" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Movies</a>
+         <a href="{{ url_for('tv_shows') }}" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">TV Shows</a>
+         <a href="{{ url_for('must_watch') }}" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Must-Watch</a>
+         <div class="mt-6 relative">
+            <input type="text" placeholder="Search..." class="bg-black bg-opacity-40 border border-gray-800 text-white pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-64">
+            <i class="bi bi-search absolute left-3 top-3.5 text-gray-400"></i>
+         </div>
+      </div>
+      <h2>Must-Watch Movies</h2>
+      <!-- Movie Grid -->
+      <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+         {% for movie in movie_recommendations %}
+         <div class="movie-item group">
+            <div class="relative overflow-hidden rounded-xl shadow-lg bg-kino-darker aspect-[2/3]">
+               <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="relative">
+                     <img src="{{ movie[1] }}" alt="{{ movie[2] }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <!-- Gradient Overlay -->
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                           <i class="bi bi-play-fill text-black text-3xl"></i>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="absolute top-3 right-3 bg-black/70 text-primary px-2 py-1 rounded-md text-sm font-medium">
+                     {{ movie[2] }}
+                  </div>
+                  <!-- Rating -->
+                  <div class="absolute bottom-3 left-3 flex items-center">
+                     <div class="bg-black/70 text-yellow-400 px-2 py-1 rounded-md flex items-center">
+                        <i class="bi bi-star-fill mr-1"></i>
+                        <span>{{ "%.1f"|format(movie[4]) }}</span>
+                     </div>
+                  </div>
+               </a>
             </div>
-
-            <div class="nav-wrapper" id="nav-wrapper">
-                <div class="menu-close" id="menu-close">
-                    &times;
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-                    </ul>
-                </nav>
+            <div class="space-y-1 px-1 mt-2">
+               <h3 class="font-semibold text-lg truncate group-hover:text-kino-yellow transition">{{ movie[2] }}</h3>
+               <p class="text-gray-400 text-sm">{{ movie[3] | formatDate }}</p>
             </div>
-        </div>
-
-        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
-            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
-            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
-                <div class="mobile-search-container">
-                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
-                    <button type="submit" class="mobile-search-button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                </div>
-                <ul id="mobile-search-suggestions" style="display: none;"></ul>
-            </form>
-        </div>
-    </header>
-
-    <h2>Must-Watch Movies</h2>
-    <div id="movie-grid" class="movie-grid">
-        {% for movie in movie_recommendations %}
-        <div class="movie-item">
-            <a href="{{ url_for('movie', movie_id=movie[0], title=movie[2].replace(' ', '-').lower()) }}">
-                <img src="{{ movie[1] }}" alt="{{ movie[2] }}">
-                <div class="watch-now-button">Watch Now<i class="bi bi-play"></i> </div>
-            </a>
-            <div class="rating-container">
-                <div class="rating">
-                    <span class="rating-num"><i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>{{ "%.1f"|format(movie[4]) }}/10 </span>
-                </div>
+         </div>
+         {% endfor %}
+      </div>
+      <h2>Must-Watch TV Shows</h2>
+      <!-- TV Show Grid -->
+      <div id="movie-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+         {% for show in series_recommendations %}
+         <div class="movie-item group">
+            <div class="relative overflow-hidden rounded-xl shadow-lg bg-kino-darker aspect-[2/3]">
+               <a href="{{ url_for('tv_show', series_id=show[0], title=show[2].replace(' ', '-').lower()) }}" class="block">
+                  <div class="relative">
+                     <img src="{{ show[1] }}" alt="{{ show[2] }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                     <!-- Gradient Overlay -->
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-kino-yellow rounded-full flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-500">
+                           <i class="bi bi-play-fill text-black text-3xl"></i>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="absolute top-3 right-3 bg-black/70 text-primary px-2 py-1 rounded-md text-sm font-medium">
+                     {{ show[2] }}
+                  </div>
+                  <!-- Rating -->
+                  <div class="absolute bottom-3 left-3 flex items-center">
+                     <div class="bg-black/70 text-yellow-400 px-2 py-1 rounded-md flex items-center">
+                        <i class="bi bi-star-fill mr-1"></i>
+                        <span>{{ "%.1f"|format(show[4]) }}</span>
+                     </div>
+                  </div>
+               </a>
             </div>
-            <h3>{{ movie[2] }}</h3>
-            <p>{{ movie[3] | formatDate }}</p>
-        </div>
-        {% endfor %}
-    </div>
-
-    <h2>Must-Watch TV Shows</h2>
-    <div id="movie-grid" class="movie-grid">
-        {% for show in series_recommendations %}
-        <div class="movie-item">
-            <a href="{{ url_for('tv_show', series_id=show[0], title=show[2].replace(' ', '-').lower()) }}">
-                <img src="{{ show[1] }}" alt="{{ show[2] }}">
-                <div class="watch-now-button">Watch Now</div>
-            </a>
-            <h3>{{ show[2] }}</h3>
-            <div class="rating-container">
-                <p class="rating">
-                <span class="rating-num"><i class="bi bi-star-fill" style="color: #f8ce0b; padding: 2px;"></i>{{ "%.1f"|format(show[4]) }}/10</span>
-                </p>
+            <div class="space-y-1 px-1 mt-2">
+               <h3 class="font-semibold text-lg truncate group-hover:text-kino-yellow transition">{{ show[2] }}</h3>
+               <p class="text-gray-400 text-sm">{{ show[3] | formatDate }}</p>
             </div>
-            <p>{{ show[3] | formatDate }}</p>
-        </div>
-        {% endfor %}
-    </div>
-
-
-    <footer>
-        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
-    </footer>
-</body>
-
+         </div>
+         {% endfor %}
+      </div>
+      <!-- "No movies found" message (hidden by default) -->
+      <div id="no-movies-message" class="hidden py-16 text-center">
+         <i class="bi bi-film text-6xl text-gray-600 mb-4 block"></i>
+         <h3 class="text-2xl font-semibold text-gray-400 mb-2">No Shows found</h3>
+         <p class="text-gray-500">Try adjusting your filters to find something interesting</p>
+         <button id="reset-filters" class="mt-6 bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg">
+         Reset Filters
+         </button>
+      </div>
+   </body>
+   <!-- Footer -->
+   <footer class="bg-kino-darker py-12 px-4 md:px-8">
+      <div class="max-w-7xl mx-auto">
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+               <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 mb-4">
+               <p class="text-gray-400 mb-4">Your ultimate destination for movies and TV shows. Stream unlimited content anytime, anywhere.</p>
+               <div class="flex space-x-4">
+                  <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-facebook"></i>
+                  </a>
+                  <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-twitter"></i>
+                  </a>
+                  <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-instagram"></i>
+                  </a>
+                  <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                  <i class="bi bi-youtube"></i>
+                  </a>
+               </div>
+            </div>
+            <div>
+               <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+               <ul class="space-y-2">
+                  <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Movies</a></li>
+                  <li><a href="/tv-shows" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">TV Shows</a></li>
+                  <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Genres</a></li>
+                  <li><a href="#upcoming" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Upcoming</a></li>
+                  <li><a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Help</a></li>
+               </ul>
+            </div>
+            <div>
+               <h4 class="text-lg font-semibold mb-4">About KinoKlick</h4>
+               <p class="text-gray-400">KinoKlick is a streaming service that offers a wide range of movies and TV shows. We pride ourselves on providing the best quality content available at the best price.</p>
+            </div>
+            <div>
+               <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+               <p class="text-gray-400">Email: contact@kinoklick.com-</p>
+            </div>
+         </div>
+      </div>
+      <div class="text-center text-gray-400 text-xs">
+         &copy; 2022 KinoKlick. All rights reserved.
+      </div>
+   </footer>
 </html>

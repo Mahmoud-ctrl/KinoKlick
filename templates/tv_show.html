@@ -26,167 +26,288 @@
 
     <!-- Styles and Scripts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" href="{{ url_for('static', filename='images/logo-t.png') }}" sizes="48x48" type="image/png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='search.js') }}"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8739011065764550" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+    
+    /* Custom scrollbar */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-in;
+    }
+    
+    /* Glass effect */
+    .glass-effect {
+        backdrop-filter: blur(10px);
+    }
+        /* Custom styles for rating circle animation */
+        .rating-circle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .rating-circle::before {
+            content: "";
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            background-color: #141414;
+            z-index: 1;
+        }
+        
+        .rating-circle span {
+            position: relative;
+            z-index: 2;
+            font-size: 1.25rem;
+        }
+        
+        .rating-circle.good {
+            --rating-color: rgb(25, 135, 84);
+        }
+        
+        .rating-circle.meh {
+            --rating-color: rgb(255, 193, 7);
+        }
+        
+        .rating-circle.bad {
+            --rating-color: rgb(220, 53, 69);
+        }
+    </style>
+
 </head>
 
+<body class="bg-dark text-white font-outfit" style="background-color: #121212;">
+	<!-- Header with Glass Effect -->
+	<header class="fixed w-full z-50 transition-all duration-300" id="main-header">
+		<div class="glass-effect bg-black bg-opacity-50 px-6 py-4">
+			<div class="max-w-7xl mx-auto flex justify-between items-center">
+				<!-- Logo -->
+				<a href="/" class="transform hover:scale-105 transition-transform duration-300">
+				<img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 filter drop-shadow-lg">
+				</a>
+				<!-- Desktop Navigation -->
+				<nav class="hidden md:flex space-x-8">
+					<a href="/" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Home</a>
+					<a href="/movies" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Movies</a>
+					<a href="/tv-shows" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">TV Shows</a>
+					<a href="/must_watch" class="text-white hover:text-kino-yellow transition-colors duration-300 font-medium relative nav-link">Must_Watch</a>
+				</nav>
+				<!-- Search & User Menu -->
+				<div class="hidden md:flex items-center space-x-6">
+					<div class="relative">
+						<input type="text" placeholder="Search..." class="bg-black bg-opacity-40 text-white pl-10 pr-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-40 focus:w-64">
+						<i class="bi bi-search absolute left-3 top-2.5 text-gray-400"></i>
+					</div>
+					<a href="/account" class="text-white hover:text-kino-yellow transition-colors duration-300">
+					<i class="bi bi-person-circle text-xl"></i>
+					</a>
+				</div>
+				<!-- Mobile Menu Button -->
+				<button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+				<i class="bi bi-list text-2xl"></i>
+				</button>
+			</div>
+		</div>
+	</header>
+	<!-- Mobile Menu -->
+	<div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col items-center justify-center space-y-8 transform transition-transform duration-300 translate-x-full">
+		<button id="menu-close" class="absolute top-6 right-6 text-3xl text-white focus:outline-none">
+		<i class="bi bi-x"></i>
+		</button>
+		<a href="/" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Home</a>
+		<a href="/movies" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Movies</a>
+		<a href="/tv-shows" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">TV Shows</a>
+		<a href="/must_watch" class="text-2xl font-semibold text-white hover:text-kino-yellow transition-colors duration-300">Must_Watch</a>
+		<div class="mt-6 relative">
+			<input type="text" placeholder="Search..." class="bg-black bg-opacity-40 border border-gray-800 text-white pl-10 pr-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-64">
+			<i class="bi bi-search absolute left-3 top-3.5 text-gray-400"></i>
+		</div>
+	</div>
 
-<body>
-    <header>
-        <div class="logo">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo">
-            </a>
-        </div>
-        <nav id="desktop-nav">
-            <ul>
-                <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-            </ul>
-        </nav>
-        <div class="header-right" id="header-right-desktop">
-            <form action="{{ url_for('search') }}" method="GET" id="desktop-search">
-                <div class="search-container">
-                    <input type="text" name="query" class="search__input" placeholder="Search for movies, TV shows..." required autocomplete="off" id="search-input">
-                    <button type="submit" class="search__button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                    <div class="search__suggestions" id="search-suggestions" style="display: none;">
-                    </div>
+    <main class="pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="season-episode-selection bg-dark p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-4">Select Season and Episode</h2>
+            <form action="{{ url_for('tv_show', series_id=series[0], title=series[1].replace(' ', '-').lower()) }}" method="get" class="space-y-4">
+                <div>
+                    <label for="season-select" class="block text-lg font-medium mb-2">Season:</label>
+                    <select id="season-select" name="season" onchange="this.form.submit()" class="bg-black bg-opacity-40 border border-gray-800 text-white pl-4 pr-8 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-full">
+                        {% for season in seasons %}
+                        <option value="{{ season[1] }}" {% if season[1]==selected_season %}selected{% endif %}>Season {{ season[1] }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-            </form>
-        </div>  
-
-        <div class="mobile-nav">
-            <div class="search-toggle" id="search-toggle">
-                <i class="fa fa-search"></i>
-            </div>
-            <div class="menu-toggle" id="menu-toggle">
-                &#9776;
-            </div>
-
-            <div class="nav-wrapper" id="nav-wrapper">
-                <div class="menu-close" id="menu-close">
-                    &times;
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="{{ url_for('index') }}"><i class="bi bi-house-door"></i> Home</a></li>
-                        <li><a href="{{ url_for('movies') }}"><i class="bi bi-film"></i> Movies</a></li>
-                        <li><a href="{{ url_for('tv_shows') }}"><i class="bi bi-tv"></i> TV Shows</a></li>
-                        <li><a href="{{ url_for('must_watch') }}"><i class="bi bi-star"></i> Must-Watch</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="mobile-search-wrapper" id="mobile-search-wrapper" style="display: none;">
-            <div class="mobile-search-close" id="mobile-search-close">&times;</div>
-            <form action="{{ url_for('search') }}" method="GET" class="mobile-search-form">
-                <div class="mobile-search-container">
-                    <input type="text" name="query" placeholder="Search for movies, TV shows..." required autocomplete="off" id="mobile-search-input">
-                    <button type="submit" class="mobile-search-button">
-                        <ion-icon name="search"><i class="bi bi-search"></i></ion-icon>
-                    </button>
-                </div>
-                <ul id="mobile-search-suggestions" style="display: none;"></ul>
-            </form>
-        </div>
-    </header>
-    <main>
-        <div class="season-episode-selection">
-            <h2>Select Season and Episode</h2>
-            <form action="{{ url_for('tv_show', series_id=series[0], title=series[1].replace(' ', '-').lower()) }}" method="get">
-                <label for="season-select" size="5">Season:</label>
-                <select id="season-select" name="season" onchange="this.form.submit()">
-                    {% for season in seasons %}
-                    <option value="{{ season[1] }}" {% if season[1]==selected_season %}selected{% endif %}>Season {{
-                        season[1] }}</option>
-                    {% endfor %}
-                </select>
-                <label for="episode-select" size="5">Episode:</label>
-                <select id="episode-select" name="episode" onchange="this.form.submit()">
-                    {% if episodes %}
-                    {% for episode in episodes %}
-                    <option value="{{ episode[1] }}" {% if episode[1]==selected_episode %}selected{% endif %}>
-                        Episode {{ episode[1] }} - {{ episode[2] }}</option>
-                    {% endfor %}
-                    {% else %}
-                    <option value="" disabled>No episodes available</option>
-                    {% endif %}
-                </select>
-            </form>
-        </div>
-        <div class="content">
-            <section class="movie-details">
-                <section class="movie-player">
-                    <h2>Watch {{ series[1] }}</h2>
-                    <div class="player">
-                        <iframe id="tv-show-frame" src="{{ embed_urls['Server 1'] }}" frameborder="0" width="100%" height="500px" allowfullscreen></iframe>
-                    </div>
-                </section>
-
-                 <!-- Server selection buttons -->
-        <div class="server-buttons">
-            {% for server, url in embed_urls.items() %}
-                <button onclick="updateEmbedUrl('{{ url }}')">{{ server }}</button>
-            {% endfor %}
-        </div>
-                <div class="details">
-                    <div class="title-rating">
-                        <h1>{{ series[1] }}</h1>
-                        <p class="rating-circle">{{ series[5] }}</p>
-                    </div>
-                    <div class="info-row">
-                        <div class="trailer-section">
-                            {% if series[10] %}
-                            <a href="{{ series[10] }}" target="_blank" class="trailer-button"><i
-                                    class="bi bi-play"></i>Play Trailer</a>
-                            {% else %}
-                            <p>Trailer not available</p>
-                            {% endif %}
-                        </div>
-                        <p class="info-item"><i class="bi bi-calendar-check" style="margin: 5px;"></i>{{ series[4] |
-                            dateformat }}</p>
-                        <p class="info-item"><i class="bi bi-film" style="margin: 5px;"></i>{{ series[3] }}</p>
-                    </div>
-                    <p>{{ series[2] }}</p>
-                    <p><strong>Top Billed Cast:</strong></p>
-                    <div class="cast-images">
-                        {% if series[7] and series[8] and series[9] %}
-                        {% for cast_image, real_name, character_name in zip(series[8].split(','), series[7].split(','),
-                        series[9].split(',')) %}
-                        <div class="cast-card">
-                            <img src="{{ cast_image }}" alt="Cast Image" class="cast-image">
-                            <p>{{ real_name }} as</p>
-                            <em>{{ character_name }}</em>
-                        </div>
+                <div>
+                    <label for="episode-select" class="block text-lg font-medium mb-2">Episode:</label>
+                    <select id="episode-select" name="episode" onchange="this.form.submit()" class="bg-black bg-opacity-40 border border-gray-800 text-white pl-4 pr-8 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-kino-yellow transition-all duration-300 w-full">
+                        {% if episodes %}
+                        {% for episode in episodes %}
+                        <option value="{{ episode[1] }}" {% if episode[1]==selected_episode %}selected{% endif %}>Episode {{ episode[1] }} - {{ episode[2] }}</option>
                         {% endfor %}
                         {% else %}
-                        <p>No cast information available.</p>
+                        <option value="" disabled>No episodes available</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </form>
+        </div>
+         <!-- Movie backdrop header -->
+         <div class="relative w-full h-44 md:h-64 lg:h-80 rounded-xl overflow-hidden mb-6">
+            <div class="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/80 to-transparent z-10"></div>
+            <img src="{{ series[6] }}" alt="{{ series[1] }}" class="w-full h-full object-cover opacity-50" />
+        </div>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left content: Player + Details -->
+            <div class="w-full lg:w-3/4">
+                <!-- Player section -->
+                <section class="bg-dark rounded-xl overflow-hidden shadow-lg mb-8">
+                    <div class="p-4 bg-gradient-to-r from-primary/20 to-dark flex justify-between items-center">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="bi bi-play-circle-fill text-primary mr-2"></i>
+                            Watch {{ series[1] }}
+                        </h2>
+                        <div class="server-buttons flex flex-wrap gap-2">
+                            {% for server, url in embed_urls.items() %}
+                            <button onclick="updateEmbedUrl('{{ url }}')" class="bg-card hover:bg-gray-800 px-3 py-1.5 rounded text-sm font-medium transition">
+                                {{ server }}
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="player aspect-video w-full bg-black">
+                        <iframe id="movie-frame" src="{{ embed_urls['Server 1'] }}" frameborder="0" width="100%" height="100%" allowfullscreen class="w-full h-full"></iframe>
+                    </div>
+                </section>
+                
+                <!-- Movie details section -->
+                <section class="bg-dark rounded-xl overflow-hidden shadow-lg">
+                    <!-- Movie header with poster -->
+                    <div class="flex flex-col md:flex-row">
+                        <div class="md:w-1/4 lg:w-1/5">
+                            <div class="relative aspect-[2/3] overflow-hidden">
+                                <img src="{{ series[6] }}" alt="{{ series[1] }}" class="w-full h-full object-cover" />
+                            </div>
+                        </div>
+                        <div class="md:w-3/4 lg:w-4/5 p-6">
+                            <!-- Title and rating -->
+                            <div class="flex justify-between items-start mb-4">
+                                <h1 class="text-3xl font-bold mr-4">{{ series[1] }}</h1>
+                                <div class="rating-circle good">{{ series[5] }}</div>
+                            </div>
+                            
+                            <!-- Info row -->
+                            <div class="flex flex-wrap gap-4 mb-6 text-sm">
+                                <div class="trailer-section">
+                                    {% if series[10] %}
+                                    <a href="{{ series[10] }}" target="_blank" class="flex items-center bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition">
+                                        <i class="bi bi-play-fill mr-1"></i>Play Trailer
+                                    </a>
+                                    {% else %}
+                                    <span class="flex items-center text-gray-400 px-4 py-2 rounded-lg bg-gray-800/50">
+                                        <i class="bi bi-film-slash mr-1"></i>Trailer not available
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <i class="bi bi-calendar-check text-primary mr-1"></i>
+                                    <span>{{ series[4] | dateformat }}</span>
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <i class="bi bi-film text-primary mr-1"></i>
+                                    <span>{{ series[3] }}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Overview -->
+                            <div class="mb-6">
+                                <p class="leading-relaxed text-gray-200">{{ series[2] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Cast section -->
+                    <div class="p-6 border-t border-gray-800">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="bi bi-people-fill text-primary mr-2"></i>Top Billed Cast
+                        </h3>
+                        
+                        {% if series[7] and series[8] and series[9] %}
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+                            {% for cast_image, real_name, character_name in zip(series[8].split(','), series[7].split(','), series[9].split(',')) %}
+                            <div class="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+                                <div class="aspect-[2/3] overflow-hidden">
+                                    <img src="{{ cast_image }}" alt="{{ real_name }}" class="w-full h-full object-cover object-center">
+                                </div>
+                                <div class="p-3">
+                                    <p class="font-medium text-sm truncate">{{ real_name }}</p>
+                                    <p class="text-gray-400 text-xs italic truncate">as {{ character_name }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="bg-card/50 rounded-lg p-6 text-center">
+                            <i class="bi bi-person-slash text-4xl text-gray-500 mb-2"></i>
+                            <p class="text-gray-400">No cast information available.</p>
+                        </div>
                         {% endif %}
                     </div>
-                </div>
-            </section>
-
-            <aside class="recommendations">
-                <h2>YOU MAY ALSO LIKE:</h2>
-                <div class="recommendation-list">
-                    {% for rec in recommendations[:6] %}
-                    <div class="recommendation-item">
-                        <a href="{{ url_for('tv_show', series_id=rec[0], title=rec[2].replace(' ', '-').lower())}}">
-                            <img src="{{ rec[1] }}" alt="{{ rec[2] }}">
-                            <p>{{ rec[2] }}</p>
-                        </a>
+                </section>
+            </div>
+            
+            <!-- Right sidebar: Recommendations -->
+            <aside class="w-full lg:w-1/4">
+                <div class="bg-dark rounded-xl overflow-hidden shadow-lg sticky top-4">
+                    <div class="p-4 bg-gradient-to-r from-primary/20 to-dark">
+                        <h2 class="font-bold text-lg flex items-center">
+                            <i class="bi bi-lightbulb-fill text-primary mr-2"></i>
+                            YOU MAY ALSO LIKE
+                        </h2>
                     </div>
-                    {% endfor %}
+                    <div class="recommendation-list p-4">
+                        <div class="grid grid-cols-2 lg:grid-cols-1 gap-4">
+                            {% for rec in recommendations[:6] %}
+                            <div class="recommendation-item bg-card hover:bg-card/80 rounded-lg overflow-hidden shadow-md transition">
+                                <a href="{{ url_for('tv_show', series_id=rec[0], title=rec[2].replace(' ', '-').lower())}}" class="block">
+                                    <div class="aspect-video overflow-hidden relative">
+                                        <img src="{{ rec[1] }}" alt="{{ rec[2] }}" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-60"></div>
+                                        <div class="absolute bottom-0 left-0 right-0 p-2">
+                                            <p class="text-sm font-medium line-clamp-2">{{ rec[2] }}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </aside>
         </div>
@@ -212,8 +333,11 @@
             // Add score class to the rating
             rating.classList.add(scoreClass);
 
-            // After adding the class, get its color
-            const ratingColor = window.getComputedStyle(rating).backgroundColor;
+            // Get the rating color based on class
+            let ratingColor;
+            if (scoreClass === 'good') ratingColor = 'rgb(25, 135, 84)';
+            else if (scoreClass === 'meh') ratingColor = 'rgb(255, 193, 7)';
+            else ratingColor = 'rgb(220, 53, 69)';
 
             // Define the background gradient according to the score and color
             const gradient = `conic-gradient(${ratingColor} ${(ratingScore / 10) * 100}%, transparent 0 100%)`;
@@ -229,14 +353,58 @@
         });
 
         function updateEmbedUrl(url) {
-            var iframe = document.getElementById('tv-show-frame');
+            var iframe = document.getElementById('movie-frame');
             iframe.src = url;
         }
 
     </script>
-    <footer>
-        <p>&copy; 2024 KinoKlick. All rights reserved.</p>
-    </footer>
+
+    <!-- Footer -->
+    <footer class="bg-kino-darker py-12 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto">
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div>
+                 <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="KinoKlick Logo" class="h-10 mb-4">
+                 <p class="text-gray-400 mb-4">Your ultimate destination for movies and TV shows. Stream unlimited content anytime, anywhere.</p>
+                 <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                    <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                    <i class="bi bi-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                    <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">
+                    <i class="bi bi-youtube"></i>
+                    </a>
+                 </div>
+              </div>
+              <div>
+                 <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                 <ul class="space-y-2">
+                    <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Movies</a></li>
+                    <li><a href="/tv-shows" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">TV Shows</a></li>
+                    <li><a href="/movies" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Genres</a></li>
+                    <li><a href="#upcoming" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Upcoming</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-kino-yellow transition-colors duration-300">Help</a></li>
+                 </ul>
+              </div>
+              <div>
+                 <h4 class="text-lg font-semibold mb-4">About KinoKlick</h4>
+                 <p class="text-gray-400">KinoKlick is a streaming service that offers a wide range of movies and TV shows. We pride ourselves on providing the best quality content available at the best price.</p>
+              </div>
+              <div>
+                 <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+                 <p class="text-gray-400">Email: contact@kinoklick.com-</p>
+              </div>
+           </div>
+        </div>
+        <div class="text-center text-gray-400 text-xs">
+           &copy; 2022 KinoKlick. All rights reserved.
+        </div>
+     </footer>
 </body>
 
 </html>
